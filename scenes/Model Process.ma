@@ -1,6 +1,6 @@
 //Maya ASCII 2017 scene
 //Name: Model Process.ma
-//Last modified: Wed, Sep 14, 2016 12:16:44 PM
+//Last modified: Wed, Sep 14, 2016 12:18:33 PM
 //Codeset: UTF-8
 requires maya "2017";
 currentUnit -l centimeter -a degree -t film;
@@ -13,13 +13,13 @@ fileInfo "license" "education";
 createNode transform -s -n "persp";
 	rename -uid "7CB4D5A6-7F4C-888B-BE70-9BAD5E48DCA1";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 29.840722956420311 20.166116834588994 -26.680685621848241 ;
-	setAttr ".r" -type "double3" -26.738352729602514 131.79999999999939 0 ;
+	setAttr ".t" -type "double3" 10.168920602085334 7.244967784158983 -10.168920602083698 ;
+	setAttr ".r" -type "double3" -26.738352729603381 134.99999999999795 0 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "5256D557-7C46-B142-700C-339B8B6B9EFF";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999986;
-	setAttr ".coi" 44.82186966202994;
+	setAttr ".coi" 16.102901931530571;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -184,6 +184,17 @@ createNode script -n "sceneConfigurationScriptNode";
 	rename -uid "0E148A4E-B84E-4BAC-4BFC-19B298BA62E9";
 	setAttr ".b" -type "string" "playbackOptions -min 1 -max 120 -ast 1 -aet 200 ";
 	setAttr ".st" 6;
+createNode polyExtrudeFace -n "polyExtrudeFace1";
+	rename -uid "5100B073-BD41-92BE-AFA3-66B2431B4A74";
+	setAttr ".ics" -type "componentList" 1 "f[1]";
+	setAttr ".ix" -type "matrix" 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1;
+	setAttr ".ws" yes;
+	setAttr ".pvt" -type "float3" 0 0.5 0 ;
+	setAttr ".rs" 209339234;
+	setAttr ".lt" -type "double3" 0 2.9582283945787943e-31 2.2795229215710044 ;
+	setAttr ".c[0]"  0 1 1;
+	setAttr ".cbn" -type "double3" -0.5 0.5 -0.5 ;
+	setAttr ".cbx" -type "double3" 0.5 0.5 0.5 ;
 select -ne :time1;
 	setAttr ".o" 1;
 	setAttr ".unw" 1;
@@ -214,13 +225,15 @@ select -ne :hardwareRenderGlobals;
 	setAttr ".btrs" 512;
 select -ne :ikSystem;
 	setAttr -s 4 ".sol";
-connectAttr "polyCube1.out" "pCubeShape1.i";
+connectAttr "polyExtrudeFace1.out" "pCubeShape1.i";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 connectAttr "layerManager.dli[0]" "defaultLayer.id";
 connectAttr "renderLayerManager.rlmi[0]" "defaultRenderLayer.rlid";
+connectAttr "polyCube1.out" "polyExtrudeFace1.ip";
+connectAttr "pCubeShape1.wm" "polyExtrudeFace1.mp";
 connectAttr "defaultRenderLayer.msg" ":defaultRenderingList1.r" -na;
 connectAttr "pCubeShape1.iog" ":initialShadingGroup.dsm" -na;
 // End of Model Process.ma
